@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{F3184FFD-02B0-4746-82AB-65223490C093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{780D8529-391F-41C4-A651-68F07D022CC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor", "Blazor\Blazor.csproj", "{AF70971E-05E5-455F-B1E0-9243C5E0F01D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3184FFD-02B0-4746-82AB-65223490C093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3184FFD-02B0-4746-82AB-65223490C093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3184FFD-02B0-4746-82AB-65223490C093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3184FFD-02B0-4746-82AB-65223490C093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{780D8529-391F-41C4-A651-68F07D022CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{780D8529-391F-41C4-A651-68F07D022CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{780D8529-391F-41C4-A651-68F07D022CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{780D8529-391F-41C4-A651-68F07D022CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF70971E-05E5-455F-B1E0-9243C5E0F01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF70971E-05E5-455F-B1E0-9243C5E0F01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF70971E-05E5-455F-B1E0-9243C5E0F01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF70971E-05E5-455F-B1E0-9243C5E0F01D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D955AE75-CF2E-44FE-9D51-1A0D5F8B2DF8}
+	EndGlobalSection
+EndGlobal

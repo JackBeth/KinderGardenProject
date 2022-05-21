@@ -1,0 +1,83 @@
+﻿@page "/CreateToy"
+
+@using DataAccess
+@using Data
+
+@inject IDataService MyDataService
+@inject NavigationManager NavMgr
+
+<h3>Create Toy</h3>
+
+<EditForm Model="@newToy" OnValidSubmit="@AddNewToy">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label for="issueinputAuthor">Choose a child</label>
+        @*<InputSelect id="issueinputChild" @bind-Value="selectedChild">
+                 @foreach (var item in allChildren)
+             {
+           <option value="@item.Id">@item.Name - @item.Age - @item.Gender</option>
+        }
+              </InputSelect>*@
+
+        <select @bind="selectedChild">
+            @if (allChildren != null)
+            {
+                @foreach (var cnt in allChildren)
+                {
+            <option value="@cnt.Name">@cnt.Name - @cnt.Age - @cnt.Gender</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        Name:<br />
+        <InputText @bind-Value="newToy.Name" />
+        <br />
+        Color:<br />
+        <InputText @bind-Value="newToy.Color" />
+        <br />
+        Condition:<br />
+        <InputText @bind-Value="newToy.Condition" />
+        <br />
+        Is Favorite:<br />
+        <InputCheckbox @bind-Value="newToy.IsFavorite" />
+        <br />
+    </div>
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+</EditForm>
+
+
+@code {
+    private string selectedChild;
+    private Toy newToy = new Toy();
+    private List<Child> allChildren = new List<Child>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        newToy.ChildOwnerOfToy = new Child();
+
+        IList<Child> children = await MyDataService.GetChildrenAsync();
+
+        foreach (var child in children)
+        {
+            allChildren.Add(child);
+        }
+    }
+
+    private async Task AddNewToy()
+    {
+        foreach (var child in allChildren)
+        {
+            if (selectedChild == child.Name)
+            {
+                newToy.ChildOwnerOfToy = child;
+            }
+        }
+
+        await MyDataService.CreateToyAsync(newToy);
+        NavMgr.NavigateTo("/Listtoys");
+    }
+}

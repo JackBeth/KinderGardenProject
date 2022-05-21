@@ -1,0 +1,146 @@
+﻿@page "/ListToys"
+
+<h3>List Of Toys</h3>
+
+@using DataAccess
+@using Data
+
+@inject IDataService MyDataService
+@inject NavigationManager NavMgr
+
+@*<p>
+    Filters:
+</p>
+<p>
+   Favorite toys:  <input type="text" @oninput="@((arg) => FilterByIsFavorite(arg))" style="width:150px" />
+</p>
+<p>
+    Gender: <input type="text" @oninput="@((arg) => FilterByGender(arg))" style="width:150px" />
+</p>*@
+
+@if (toysToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (!toysToShow.Any())
+{
+    <p>
+        <em>No Toys exist. Please add some.</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Toy Name</th>
+                <th>Color</th>
+                <th>Is Favorite</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Toy item in toysToShow)
+            {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Color</td>
+                <td>@item.IsFavorite</td>
+                @if (item.ChildOwnerOfToy != null)
+                {
+                    <td>@item.ChildOwnerOfToy.Name</td>
+                    <td>@item.ChildOwnerOfToy.Age</td>
+                    <td>@item.ChildOwnerOfToy.Gender</td>
+                }
+                else
+                {
+                    <td>??????</td>
+                    <td>??????</td>
+                }
+                <td>
+                    <button @onclick="@(() => RemoveToy(item.Name ))">
+                        <i class="oi oi-trash" style="color:red" />
+                    </button>
+                </td>
+                <td>
+                    <button @onclick="@(() => Edit(item.Name))">
+                        <i class="oi oi-pencil" style="color:#1b6ec2" />
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    private IList<Toy> toysToShow;
+    private IList<Toy> allToys;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        allToys = new List<Toy>();
+        toysToShow = new List<Toy>();
+
+        IList<Toy> toys = await MyDataService.GetToysAsync();
+        foreach (var toy in toys)
+        {
+            allToys.Add(toy);
+        }
+
+        toysToShow = allToys;
+    }
+
+    private void Edit(string name)
+    {
+        NavMgr.NavigateTo($"Edit/{name}");
+    }
+
+    private async Task RemoveToy(string name)
+    {
+        Toy t = toysToShow.First(t => t.Name == name);
+        await MyDataService.RemoveToyAsync(name);
+
+        toysToShow.Remove(t);
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    // FILTER Section
+    /////////////////////////////////////////////////////////////////////
+
+    private string? filterByIsFavorite;
+    private string? filterByGender;
+
+    private void FilterTitle(ChangeEventArgs args)
+    {
+        filterByGender = null;
+        try
+        {
+            filterByGender = args.Value.ToString();
+        }
+        catch (Exception e) { }
+        ExecuteFilter();
+    }
+
+    private void FilterByName(ChangeEventArgs args)
+    {
+        filterByIsFavorite = null;
+        try
+        {
+            filterByIsFavorite = args.Value.ToString();
+        }
+        catch (Exception e) { }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        toysToShow = allToys.Where(t =>
+           (filterByGender != null && t.ChildOwnerOfToy.Gender == filterByGender || filterByGender == null || filterByGender.Length == 0) &&
+           ((filterByIsFavorite != null && t.ChildOwnerOfToy.Name == filterByIsFavorite) || (filterByIsFavorite != null && t.ChildOwnerOfToy.Gender == filterByIsFavorite) || filterByIsFavorite == null || filterByIsFavorite.Length == 0)
+        ).ToList();
+    }
+}
